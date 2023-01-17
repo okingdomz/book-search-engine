@@ -25,7 +25,7 @@ const resolvers = {
     login: async (parent, { email, password }, context) => {
         const user = await User.findOne( { email });
         if(!user) {
-          throw new AuthenticationError('wring user information gang')
+          throw new AuthenticationError('wrong user information gang')
         }
         const correctPw = await User.isCorrectPassword(password);
         if(!correctPw) {
