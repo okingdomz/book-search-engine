@@ -4,7 +4,7 @@ import { ADD_USER } from '../utils/mutations';
 import { useMutation } from '@apollo/client';
 
 // removed due to change to mutation routes
-// import Auth from '../utils/auth';
+import Auth from '../utils/auth';
 
 const SignupForm = () => {
   // set initial form state
@@ -14,7 +14,7 @@ const SignupForm = () => {
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
-  // add USER const
+  // add USER const with error
   const [addUser, { error }] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
@@ -32,10 +32,14 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
+    // add_user function from readme
+
     try {
       const { data } = await addUser({
-        variables: { userFormData }
-      })
+        variables: {...userFormData }
+      });
+      // adding auth Login token reciever connection
+      Auth.login(data.addUser.token);
         
     } catch (err) {
       console.error(err);

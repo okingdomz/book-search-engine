@@ -27,7 +27,7 @@ const resolvers = {
         if(!user) {
           throw new AuthenticationError('wrong user information gang')
         }
-        const correctPw = await User.isCorrectPassword(password);
+        const correctPw = await user.isCorrectPassword(password);
         if(!correctPw) {
           throw new AuthenticationError('wrong password information gango')
         }
@@ -37,7 +37,7 @@ const resolvers = {
 
     saveBook: async (parent, { book }, context) => {
         if (context.user) {
-          const updatedUser = await User.findOneAndUpdate({ _id: context.user._id },  { $addToSet: { savedBooks: body } },
+          const updatedUser = await User.findOneAndUpdate({ _id: context.user._id },  { $addToSet: { savedBooks: book } },
             { new: true, runValidators: true })
           return updatedUser;
         }
@@ -46,7 +46,7 @@ const resolvers = {
 
     removeBook: async (parent, { bookId }, context) => {
         if (context.user) {
-          const updatedUser = await User.findOneAndUpdate ({ _id: context.user._id}, { $pull: { savedBooks: { bookId: params.bookId } } }, { new: true }
+          const updatedUser = await User.findOneAndUpdate ({ _id: context.user._id}, { $pull: { savedBooks: { bookId: bookId } } }, { new: true }
           )
           return updatedUser;
         }
