@@ -10,12 +10,12 @@ import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
-  const [userFormData, setUserFormData] = useState({ email: '', password: '' });
+  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   // creating loginuser function with mutation functionality
-  const [loginUser, { error } ] = useMutation(LOGIN_USER);
+  const [login, { error }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -33,20 +33,19 @@ const LoginForm = () => {
     }
 
     try {
-      const { data } = await loginUser({
-        variables: { userFormData }
-      })
+      const { data } = await login({
+        variables: { ...userFormData },
+      });
 
-      Auth.login(data.loginUser.token);
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
-      setShowAlert(true);
+      // setShowAlert(true);
     }
 
     setUserFormData({
-      username: '',
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     });
   };
 
